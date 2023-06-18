@@ -9,14 +9,15 @@ BASE_DIR = Path(__file__).parent.parent
 
 class PepParsePipeline:
     def open_spider(self, spider):
-        self.__status_vocabulary = {}
+        self.__statuses = {}
 
     def process_item(self, item, spider):
         adapter = ItemAdapter(item)
-        if adapter.get('status'):
+        adapter_status = adapter.get('status')
+        if adapter_status:
             pep_status = adapter['status']
-            self.__status_vocabulary[pep_status] = (
-                self.__status_vocabulary.get(pep_status, 0) + 1
+            self.__statuses[pep_status] = (
+                self.__statuses.get(pep_status, 0) + 1
             )
             return item
 
@@ -29,7 +30,7 @@ class PepParsePipeline:
             ).writerows(
                 (
                     ("Статус", "Количество"),
-                    *self.__status_vocabulary.items(),
-                    ("Total", sum(self.__status_vocabulary.values()))
+                    *self.__statuses.items(),
+                    ("Total", sum(self.__statuses.values()))
                 )
             )
