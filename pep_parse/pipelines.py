@@ -15,9 +15,8 @@ class PepParsePipeline:
         adapter = ItemAdapter(item)
         adapter_status = adapter.get('status')
         if adapter_status:
-            pep_status = adapter['status']
-            self.__statuses[pep_status] = (
-                self.__statuses.get(pep_status, 0) + 1
+            self.__statuses[adapter_status] = (
+                self.__statuses.get(adapter_status, 0) + 1
             )
             return item
 
